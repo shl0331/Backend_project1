@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="Board">
+  <!-- 게시글 갯수 가져오기 -->
+  	<select id="getBoardCnt" resultType="_int">
+  		SELECT COUNT(*) FROM T_SHARE_BOARD
+  	</select>
+  	<!--  게시글 전체 목록 가져오기 -->
+  	<select id="getBoardList" parameterType="hashmap" resultType="boarddto">
+  		SELECT * FROM 
+  			(SELECT ROWNUM R, D.* FROM 
+  				(SELECT * FROM T_SHARE_BOARD ORDER BY SHAREBOARDNUM DESC) D) B 
+  		WHERE B.R BETWEEN #{startRow} AND #{endRow}
+  	</select>
+  	<!-- 게시글 상세보기 -->
+  	<select id="getDetail" parameterType="_int" resultType="boarddto">
+  		SELECT * FROM T_SHARE_BOARD WHERE SHAREBOARDNUM=#{shareboardnum}
+  	</select>
+  	<!-- 게시글 번호 가져오기 -->
+  	<select id="getSeq" resultType="_int" parameterType="string">
+		SELECT SHAREBOARDNUM FROM T_SHARE_BOARD WHERE MEMBERID=#{memberid} ORDER BY SHAREBOARDNUM DESC
+	</select>
+  	<!-- 댓글 갯수 가져오기 -->
+	<select id="getReplyCnt" resultType="_int" parameterType="_int">
+		SELECT COUNT(*) FROM T_SHARE_REPLY WHERE SHAREBOARDNUM=#{shareboardnum}
+	</select>
+	<!-- 댓글 목록 가져오기 -->
+	<select id="getReplys" parameterType="_int" resultType="replydto">
+		SELECT * FROM T_SHARE_REPLY WHERE SHAREBOARDNUM=#{shareboardnum}
+	</select>
+	<!-- *********************************************************************
+	
+	*************************************************************************
+	
+	************************************************************************* -->
+	
+	<!-- 게시글 등록하기 -->
+	<insert id="insertBoard" parameterType="boarddto">
+		INSERT INTO T_SHARE_BOARD
+		VALUES(SHARE_BOARD_SEQ.NEXTVAL, #{memberid}, #{useraddr}, #{shareboardtitle}, #{shareboardcontents}, SYSDATE,0)
+	</insert>
+	<!-- 댓글 등록하기 -->
+	<insert id="insertReply" parameterType="replydto">
+			INSERT INTO T_SHARE_REPLY
+			VALUES(SHARE_REPLY_SEQ.NEXTVAL, #{shareboardnum},  #{memberid}, #{sharereplycontents})
+	</insert>
+	
+	<!-- *********************************************************************
+	
+	*************************************************************************
+	
+	************************************************************************* -->
+	<!-- 게시글 조회수 변경 -->
+	<update id="updateReadCount" parameterType="_int">
+		UPDATE T_SHARE_BOARD SET SHAREBOARDREADCNT = SHAREBOARDREADCNT+1 WHERE SHAREBOARDNUM=#{shareboardnum}
+	</update>
+	<!-- 게시글 수정하기  -->
+	<update id="updateBoard" parameterType="boarddto">
+		UPDATE T_SHARE_BOARD SET SHAREBOARDTITLE=#{shareboardtitle}, USERADDR=#{useraddr}, SHAREBOARDCONTENTS=#{shareboardcontents}
+		WHERE SHAREBOARDNUM=#{shareboardnum}
+	</update>
+	<!--  댓글 수정하기 -->
+	<update id="modifyReply" parameterType="hashmap">
+		UPDATE T_SHARE_REPLY SET SHAREREPLYCONTENTS=#{sharereplycontents} WHERE SHAREREPLYNUM=#{sharereplynum}
+	</update>
+	
+	
+	<!-- *********************************************************************
+	
+	*************************************************************************
+	
+	************************************************************************* -->
+	
+	<!-- 댓글  한개 삭제하기 -->
+	<delete id="deleteReply" parameterType="_int">
+		DELETE FROM T_SHARE_REPLY WHERE SHAREREPLYNUM=#{sharereplynum}
+	</delete>
+	<!--  댓글 전체 삭제하기 -->
+	<delete id="deleteReplyAll" parameterType="_int">
+		DELETE FROM T_SHARE_REPLY WHERE SHAREBOARDNUM=#{shareboardnum}
+	</delete>
+	<!--  게시판 삭제하기 -->
+	<delete id="deleteBoard" parameterType="_int">
+		DELETE FROM T_SHARE_BOARD WHERE SHAREBOARDNUM=#{shareboardnum}
+	</delete>
+	
+	
+	
+	
+  </mapper>

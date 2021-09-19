@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recipe">
+	<!-- 게시글 카테고리 가져오기 -->
+	<select id="getList" parameterType="string" resultType="recipedto">
+		SELECT * FROM T_RECIPE WHERE RECIPECATRGORY=#{recipeCategory}
+	</select>
+	<!-- 게시글 전체 불러오기 -->
+	<select id="getAllList" resultType="recipedto">
+		SELECT * FROM T_RECIPE
+	</select>
+	<!-- 내가 등록한 레시피 목록 가져오기 -->
+	<select id="getMyRecipeList" parameterType="string" resultType="recipedto">
+	SELECT * FROM T_RECIPE WHERE MEMBERID=#{memberid}
+	</select>
+	<!-- 게시글 파일 갯수 -->
+	<select id="getFileCnt" resultType="_int" parameterType="_int">
+      SELECT COUNT(*) FROM T_RECIPE_IMG WHERE RECIPENUM=#{recipenum}
+   </select>
+   <select id="getseq" parameterType="hashmap" resultType="_int">
+   	SELECT RECIPENUM FROM T_RECIPE WHERE  MEMBERID=#{memberId} AND  RECIPENAME=#{recipeName} 
+   </select>
+   <!-- 내가 선택한 레시피 가져오기 -->
+   <select id="getSelectRecipe" parameterType="_int" resultType="recipedto">
+   	SELECT * FROM T_RECIPE WHERE RECIPENUM=#{recipeNUm}
+   </select>
+   <!-- 내가 선택한 레시피의 스텝 갯수 가져오기  -->
+   <select id="getCntStep" parameterType="_int" resultType="_int">
+   	SELECT COUNT(*) FROM WEB.T_RECIPE_STEP WHERE RECIPENUM=#{recipeNum}
+   </select>
+	<!-- 내가 선택한 레시피 스텝 가져오기 -->
+	<select id="recipeStepAll" parameterType="_int" resultType="recipeStepdto">
+		SELECT * FROM WEB.T_RECIPE_STEP WHERE RECIPENUM=#{recipeNum} 
+	</select>
+
+
+   <!-- 파일 전체 삭제하기 -->
+   <delete id="deleteFileAll" parameterType="_int">
+      DELETE FROM T_RECIPE_IMG WHERE RECIPENUM=#{recipenum}
+   </delete>
+   <!-- 레시피 삭제하기 -->
+   <delete id="deleteRecipe" parameterType="_int">
+      DELETE FROM T_RECIPE WHERE RECIPENUM=#{recipenum}
+   </delete>
+   
+   <!-- 레시피 등록하기 -->
+	<insert id="insertRecipe" parameterType="recipedto" >
+		INSERT INTO WEB.T_RECIPE
+		(RECIPENUM, RECIPENAME, RECIPEINFO, RECIPECATEGORY, RECIPETIME, MEMBERID, RECIPEMAINIMG)
+		VALUES(RECIPE_SEQ.NEXTVAL,#{recipeName},#{recipeInfo},#{recipeCategory},#{recipeTime},#{memberId},#{recipeMainImg})
+	</insert>
+	
+	<!-- 레시피 스텝별 등록하기-->
+	<insert id="insertRecipeStep" parameterType="recipeStepdto">
+		INSERT INTO WEB.T_RECIPE_STEP
+		(RECIPESTEPSEQ, RECIPENUM, RECIPESTEPIMG, RECIPESTEPTEXT)
+		VALUES(RECIPE_STEP_SEQ.NEXTVAL, #{recipeNum},#{recipeStepImg}, #{recipeStepText})
+	</insert>
+</mapper>

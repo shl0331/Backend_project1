@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recipeFile">
+	<!--레시피 파일 업로드-->
+	<insert id="insertFile" parameterType="filedto">
+		INSERT INTO TBL_FILE VALUES(#{systemname},#{orgname},#{boardnum})
+	</insert>
+	<!--내가 선택한 레시피의 파일 가져오기  -->
+	<select id="getFiles" parameterType="_int" resultType="filedto">
+		SELECT * FROM TBL_FILE WHERE BOARDNUM=#{boardnum}
+	</select>
+</mapper>
