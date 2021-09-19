@@ -39,18 +39,7 @@
                location.replace("${pageContext.request.contextPath}/app/member/MemberLogin.mb");
             </script>
          </c:if>
-         <c:choose>
-            <c:when test="${not empty param.update}">
-               <script>
-                  alert("댓글 수정 실패!")
-               </script>
-            </c:when>
-            <c:when test="${not empty param.delete }">
-               <script>
-                  alert("댓글 삭제 실패!")
-               </script>
-            </c:when>
-         </c:choose>
+
 									
 							<!-- Banner -->
 									<section>

@@ -87,7 +87,7 @@
 													<a href="${pageContext.request.contextPath}/app/board/BoardView.bo?shareboardnum=${board.shareboardnum}">${board.shareboardtitle} </a>
 												</td>
 												<td>${board.memberid}</td>
-												<td>${session.useraddr}</td>
+												<td>${board.useraddr}</td>
 												<td>${board.shareboarddate}</td>
 												<td>${board.shareboardreadcnt}</td>
 											</tr>
@@ -113,8 +113,7 @@
 											<c:choose>
 												<c:when test="${page == i}">[${i}]</c:when>
 												<c:otherwise>
-													<a
-														href="${pageContext.request.contextPath}/app/board/BoardList.bo?page=${i}">[${i}]</a>
+													<a href="${pageContext.request.contextPath}/app/board/BoardList.bo?page=${i}">[${i}]</a>
 												</c:otherwise>
 											</c:choose>
 										</c:forEach> <c:if test="${page<totalPage}">
