@@ -27,28 +27,28 @@ public class BoardDeleteOkAction implements Action {
 		if (replyCnt != 0) {
 			flag = bdao.deleteReplyAll(shareboardnum);
 		}
-		// �빐�떦 寃뚯떆湲��뿉 �삱�씪�� �엳�뒗 �뙆�씪�뱾�쓽 �젙蹂대�� �떞�� DTO�뱾 �떎 寃��깋�빐�삤湲�
+		// 해당 게시글에 올라온 파일들의 정보를 담은 dto 가져오기
 		List<FileDTO> files = fdao.getFiles(shareboardnum);
 		if (files.size() > 0) {
-			// 寃��깋�맂 臾댁뼵媛�媛� �엳�떎硫�
 			for (FileDTO f : files) {
-				// �빐�떦 DTO�뱾 �븯�굹�뵫 爰쇰궡�삤硫댁꽌, �떎議댄븯�뒗 �뙆�씪 媛앹껜 留뚮뱾湲�
+				// dto에서 파일 꺼내오기
 				File file = new File(saveFolder, f.getShareboardfilename());
 				if (file.exists()) {
-					// �떎�젣 �뙆�씪�씠 �엳�떎硫� 吏��썙二쇨린
 					file.delete();
 				}
-				// 爰쇰궡�삩 DTO�쓽 �떎議댄뙆�씪�� �궘�젣�릺�뿀�쑝誘�濡� DB�뿉�꽌�룄 �궘�젣�빐二쇨린
+				// db에서도 삭제해오기
 				fflag = fdao.deleteFileByName(f.getShareboardfilename());
 				if (!fflag) {
-					// DB�뿉�꽌 File�젙蹂� 吏��슦湲� �떎�뙣�뻽�떎硫� for臾� �깉異� �썑 �궘�젣 吏꾪뻾 硫덉텛湲�
+					// db에서 파일 삭제 실패
 					break;
 				}
 			}
 		}
+		//댓글 없을 경우
 		if (!flag) {
 			flag = true;
 		}
+		//파일 없을 경우
 		if (!fflag) {
 			fflag = true;
 		}

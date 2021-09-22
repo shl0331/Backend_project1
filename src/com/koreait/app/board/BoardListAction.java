@@ -12,25 +12,23 @@ public class BoardListAction implements Action{
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String temp = request.getParameter("page");
 		BoardDAO bdao = new BoardDAO();
-		//由ъ뒪�듃�뿉�꽌 蹂댁뿬�떖�씪怨� �슂泥��븳 �럹�씠吏�
+		// 받아온 페이지(보고있던 페이지)
 		int page = temp == null?1:Integer.parseInt(temp);
-		//�븳 �럹�씠吏��뿉 蹂댁뿬吏� 寃뚯떆湲��쓽 媛쒖닔
+		//1개의 페이지에 띄워줄 게시글 개수
 		int pageSize = 10;
-		//�쟾泥� 寃뚯떆湲� 媛쒖닔
+		// 전체 게시글
 		int totalCnt = bdao.getBoardCnt();
-		//蹂댁뿬以섏빞�릺�뒗 留덉�留� 寃뚯떆湲��쓽 rownum
+		// 현재 페이지의 마지막 번호(rownum) 
 		int endRow = page*pageSize;
-		//蹂댁뿬以섏빞�릺�뒗 泥ル쾲吏� 寃뚯떆湲��쓽 rownum
+		// 현재 페이지의 첫번째 번호(rownum)
 		int startRow = endRow-(pageSize-1);
 		
-		//�븘�옒履� �럹�씠吏뺤쿂由ъ쓽 蹂댁뿬吏��뒗 泥ル쾲吏� �럹�씠吏� 踰덊샇
+		// 현재 페이지에서 보여줄 페이지네이션의 첫번째 페이지
 		int startPage = ((page-1)/pageSize)*pageSize+1;
-		//�븘�옒履� �럹�씠吏뺤쿂由ъ쓽 蹂댁뿬吏��뒗 留덉�留� �럹�씠吏� 踰덊샇
+		// 현재 페이지에서 보여줄 페이지네이션의 마지막 페이지
 		int endPage = startPage+9;
-		//媛��옣 留덉�留� �럹�씠吏� 踰덊샇
+		// 전체 페이지 수
 		int totalPage = (totalCnt-1)/pageSize+1;
-		//媛��옣 留덉�留� �럹�씠吏� 踰덊샇蹂대떎 �뿰�궛�쑝濡� 援ы빐吏� endPage媛� �뜑 �겙 寃쎌슦�룄 �엳�떎.
-		//洹몃븣�뒗 endPage瑜� 媛��옣 留덉�留� �럹�씠吏�濡� 諛붽씀�뼱以��떎.
 		endPage = endPage>totalPage?totalPage:endPage;
 		
 		request.setAttribute("totalPage", totalPage);

@@ -181,8 +181,6 @@
 		//클래스명이 finput인것이 변화가 생겼다면 넘겨주는 함수 호출
 		$('.finput').change(function(e){
 			//$(this) : 변화가 생긴 그 객체(input type="file") - 방금 파일을 첨부한 input 요소
-			//새로운 파일을 올렸다면 그 위에 있는 요소중 <p>의 내부에 방금 올린 파일명을 써주어야 한다.
-			//3번 이전으로 가서 있는 요소가 p태그이므로 prev을 3번 써주고 그 안에있는 text를 올린 파일명으로 바꾸어준다.
 			//e.target.files[0].name : 방금 선택한 파일의 파일명 추출
 			$(this).prev().prev().prev().text(e.target.files[0].name);
 			$(this).prev().prev().val(e.target.files[0].name);

@@ -39,11 +39,6 @@
 					location.replace("${pageContext.request.contextPath}/app/member/MemberLogin.mb");
 				</script>
 			</c:if>
-			<c:if test="${not empty param.flag}">
-				<script>
-					alert("글쓰기 실패! 다시 시도하세요!");
-				</script>
-			</c:if>
 			<c:set var="boardList" value="${requestScope.boardList}" />
 			<c:set var="page" value="${requestScope.page}" />
 			<c:set var="startPage" value="${requestScope.startPage}" />
